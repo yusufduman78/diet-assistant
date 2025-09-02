@@ -1,3 +1,7 @@
 #dataset
 data/raw/
 data/processed/
+
+#idea
+.idea/
+
