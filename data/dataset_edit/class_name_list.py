@@ -1,6 +1,8 @@
 import os
 import csv
 
+from sympy import wronskian
+
 root = "../raw"
 metadata_path = "../metadata"
 output_file = os.path.join(metadata_path,"classes.csv")
@@ -33,4 +35,9 @@ for dataset_name in os.listdir(root): # folders of datasets
     if os.path.isdir(dataset_path): # if it is folder
         find_classes(dataset_path,dataset_name) # call the function
 
+with open(output_file,"w",newline="",encoding="utf-8") as f: # open csv file in 'write' mod
+    writer = csv.writer(f)
+    writer.writerow(["dataset_name","class_name","num_images"])
+    writer.writerows(classes)
 
+print(f"Total {len(classes)} classes found. Saved to file '{output_file}' ")
