@@ -9,18 +9,15 @@ os.makedirs(metadata_path, exist_ok=True)
 
 classes = []
 
-for dataset_name in os.listdir(root):
-    dataset_path = os.path.join(root,dataset_name)
-    if os.path.isdir(dataset_path):
-        for class_name in os.listdir(dataset_path):
-            class_path = os.path.join(dataset_path,class_name)
-            if os.path.isdir(class_path):
-                num_images = len([f for f in os.listdir(class_path) if f.lower().endswith((".jpg",".png"))])
-                classes.append((dataset_name,class_name,num_images))
+def find_classes(base_path,dataset_name):
+    nth_layer = os.listdir(base_path)
+    image_files = [f for f in nth_layer if f.lower().endswith((".jpg",".png"))]
+    subfolders = [d for d in nth_layer if os.path.isdir(os.path.join(base_path,d))]
 
-with open(output_file, "w",newline="",encoding="utf-8") as f:
-    writer = csv.writer(f)
-    writer.writerow(["dataset_name","class_name","num_images"])
-    writer.writerows(classes)
-
-print(f"Total {len(classes)} classes found. Saved to file '{output_file}' ")
+    if image_files:
+        num_images = len(image_files)
+        class_name = os.path.basename(base_path)
+        classes.append((dataset_name,class_name,num_images))
+    else:
+        for sub in subfolders:
+            find_classes(os.path.join(base_path,sub),dataset_name)
