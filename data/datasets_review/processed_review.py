@@ -16,3 +16,12 @@ df = pd.DataFrame(data,columns=["class_name","num_images"])
 df.to_csv(class_dist,index=False,encoding="utf-8")
 
 print(f"Class Distribution was saved: {class_dist}")
+
+class_pd = pd.read_csv(class_dist)
+
+for _,row in class_pd.iterrows():
+    class_name = row["class_name"]
+    num_image = row["num_images"]
+
+    if (num_image < 1000):
+        print(f"{class_name} --> {num_image}")
