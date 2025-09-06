@@ -33,6 +33,7 @@ def find_images(base_path,class_name):
 
 for _,row in tqdm(class_df.iterrows(),total=len(class_df),desc="Processing..."):
     class_name = row["class_name"]
+    tqdm.set_description(f"Processing... ({class_name})") # Dynamically update the description
     images = find_images(processed_dir,class_name)
     random.shuffle(images)
     total_images = len(images)
@@ -57,17 +58,17 @@ for _,row in tqdm(class_df.iterrows(),total=len(class_df),desc="Processing..."):
     test_images = images[train_count+val_count:]
 
     #Copying the files
-    for img in tqdm(train_images, desc=f"Copying {class_name} Train Images", leave=False):
+    for img in train_images:
         src_path = os.path.join(processed_dir, class_name, img)
         dst_path = os.path.join(train_class_dir, img)
         shutil.copy2(src_path, dst_path)
 
-    for img in tqdm(val_images, desc=f"Copying {class_name} Validation Images", leave=False):
+    for img in val_images:
         src_path = os.path.join(processed_dir, class_name, img)
         dst_path = os.path.join(val_class_dir, img)
         shutil.copy2(src_path, dst_path)
 
-    for img in tqdm(test_images, desc=f"Copying {class_name} Test Images", leave=False):
+    for img in test_images:
         src_path = os.path.join(processed_dir, class_name, img)
         dst_path = os.path.join(test_class_dir, img)
         shutil.copy2(src_path, dst_path)
