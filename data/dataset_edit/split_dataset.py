@@ -2,6 +2,7 @@ import os
 import shutil
 import random
 import pandas as pd
+from tqdm import tqdm
 
 processed_dir = "../processed"
 train_dir = os.path.join(processed_dir, "train")
@@ -30,7 +31,7 @@ def find_images(base_path,class_name):
     return image_files
 
 
-for _,row in class_df.iterrows():
+for _,row in tqdm(class_df.iterrows(),total=len(class_df),desc="Processing..."):
     class_name = row["class_name"]
     images = find_images(processed_dir,class_name)
     random.shuffle(images)
@@ -56,17 +57,17 @@ for _,row in class_df.iterrows():
     test_images = images[train_count+val_count:]
 
     #Copying the files
-    for img in train_images:
+    for img in tqdm(train_images, desc=f"Copying {class_name} Train Images", leave=False):
         src_path = os.path.join(processed_dir, class_name, img)
         dst_path = os.path.join(train_class_dir, img)
         shutil.copy2(src_path, dst_path)
 
-    for img in val_images:
+    for img in tqdm(val_images, desc=f"Copying {class_name} Validation Images", leave=False):
         src_path = os.path.join(processed_dir, class_name, img)
         dst_path = os.path.join(val_class_dir, img)
         shutil.copy2(src_path, dst_path)
 
-    for img in test_images:
+    for img in tqdm(test_images, desc=f"Copying {class_name} Test Images", leave=False):
         src_path = os.path.join(processed_dir, class_name, img)
         dst_path = os.path.join(test_class_dir, img)
         shutil.copy2(src_path, dst_path)
