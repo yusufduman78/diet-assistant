@@ -30,10 +30,10 @@ def find_images(base_path,class_name):
 
     return image_files
 
-
-for _,row in tqdm(class_df.iterrows(),total=len(class_df),desc="Processing..."):
+bar = tqdm(class_df.iterrows(), total=len(class_df), desc="Processing...")
+for _,row in bar:
     class_name = row["class_name"]
-    tqdm.set_description(f"Processing... ({class_name})") # Dynamically update the description
+    bar.set_description(f"Processing... ({class_name})") # Dynamically update the description
     images = find_images(processed_dir,class_name)
     random.shuffle(images)
     total_images = len(images)
