@@ -4,16 +4,21 @@ import random
 import pandas as pd
 from tqdm import tqdm
 
+#file paths
 processed_dir = "../processed"
-train_dir = os.path.join(processed_dir, "train")
-test_dir = os.path.join(processed_dir, "test")
-val_dir = os.path.join(processed_dir, "val")
+final_dataset_dir = os.path.join(processed_dir,"01_final_dataset")
+train_dir = os.path.join(final_dataset_dir, "train")
+test_dir = os.path.join(final_dataset_dir, "test")
+val_dir = os.path.join(final_dataset_dir, "val")
 final_classes = "../metadata/final_classes.csv"
 
+#main and sub folder
+os.makedirs(final_dataset_dir,exist_ok=True)
 os.makedirs(train_dir,exist_ok=True)
 os.makedirs(test_dir,exist_ok=True)
 os.makedirs(val_dir,exist_ok=True)
 
+#reading csv
 class_df = pd.read_csv(final_classes)
 
 def find_images(base_path,class_name):
@@ -30,6 +35,7 @@ def find_images(base_path,class_name):
 
     return image_files
 
+#tqdm object for iteration
 bar = tqdm(class_df.iterrows(), total=len(class_df), desc="Processing...")
 for _,row in bar:
     class_name = row["class_name"]
