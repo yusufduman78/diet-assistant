@@ -1,8 +1,6 @@
 import os
 import csv
 
-from sympy import wronskian
-
 root = "../raw"
 metadata_path = "../metadata"
 output_file = os.path.join(metadata_path,"classes.csv")
