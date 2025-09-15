@@ -47,7 +47,10 @@ class FoodDataset(Dataset):
             idx = idx.tolist()
 
         row = self.df.iloc[idx]
-        img_path = self.data_path / row['file_path']
+        path_parts = Path(row['file_path']).parts
+        correct_path_from_root = Path(*path_parts[1:])
+        project_root = Path(__file__).resolve().parents[2]
+        img_path = project_root / 'data' / correct_path_from_root
 
         # load image by PIL
         image = Image.open(img_path).convert('RGB')
@@ -76,6 +79,7 @@ def create_data_loaders(data_path, train_transform, val_transform,
     train_dataset = FoodDataset(data_path, transform=train_transform, split="train")
     val_dataset = FoodDataset(data_path, transform=val_transform, split="val")
     test_dataset = FoodDataset(data_path, transform=val_transform, split="test")
+
 
     weights = None
     if class_weights:
@@ -122,3 +126,5 @@ if __name__ == "__main__":
     print(f"Val batches: {len(val_loader)}")
     print(f"Test batches: {len(test_loader)}")
     print(f"Class weights shape: {weights.shape}")
+
+
