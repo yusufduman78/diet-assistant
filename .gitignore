@@ -5,3 +5,6 @@ data/processed/
 #idea
 .idea/
 
+#models
+models/
+
